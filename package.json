@@ -1,0 +1,33 @@
+{
+  "name": "bootstrap4.videoembed.js",
+  "version": "1.0.0",
+  "description": "Pure javascript video embed plugin for Bootstrap 4. ES6 transpiled to ES5 with babel.",
+  "main": "bootstrap4.videoembed.js",
+  "scripts": {
+    "build": "babel source --presets babel-preset-es2015 --out-dir distribution",
+    "test": "open test/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjjakes/bootstrap4.videoembed.js.git"
+  },
+  "devDependencies": {
+    "babel-cli": "6",
+    "babel-preset-es2015": "6"
+  },
+  "keywords": [
+    "bootstrap",
+    "bootstrap 4",
+    "video",
+    "youtube",
+    "vimeo",
+    "es6",
+    "browser"
+  ],
+  "author": "https://github.com/rjjakes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rjjakes/es6.videoembed.js/issues"
+  },
+  "homepage": "https://github.com/rjjakes/es6.videoembed.js#readme"
+}
