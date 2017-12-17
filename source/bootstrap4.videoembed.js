@@ -1,6 +1,7 @@
 (function ($) {
 
     $.fn.VideoEmbed = function () {
+        const dqs = document.querySelectorAll
 
         // Separate scope for each iteration.
         return this.each(function () {
@@ -26,14 +27,14 @@
                 cleanVideoID = videoLink.split('/')[5].replace(/(&)+(.*)/, '')
             }
 
-            if (videoLink.match(/(youtu.be)/) || videoLink.match(/(youtube.com)/)) {
+            if (videoLink.includes('youtu.be') || videoLink.includes('youtube.com')) {
                 videoEmbedLink = `https://www.youtube.com/embed/${cleanVideoID}?autoplay=${autoplay.autoplay}`
                 previewImageUrl = `https://img.youtube.com/vi/${cleanVideoID}/hqdefault.jpg`
 
-                // get and insert the thumbnail
-                $(this).html(`<img class="embedded-video-thumbnail" src="${previewImageUrl}" alt=""></a>`)
+                // Get and insert the thumbnail.
+                $(this).html(`<img class="embedded-video-thumbnail" src="${previewImageUrl}" alt="Youtube video.">`)
             }
-            else if (videoLink.match(/(vimeo.com\/)+[0-9]/) || videoLink.match(/(vimeo.com\/)+[a-zA-Z]/)) {
+            else if (videoLink.includes('vimeo.com')) {
                 videoEmbedLink = `https://player.vimeo.com/video/${cleanVideoID}?autoplay=${autoplay.autoplay}`
                 let saveThis = this    // save a reference to this
 
@@ -48,8 +49,8 @@
                 .then(responseJson => {
                     // Decode the response to get the preview image URL.
                     try {
-                        previewImageUrl = responseJson.pop()['thumbnail_large']
-                        $(saveThis).html(`<img class="embedded-video-thumbnail" src="${previewImageUrl}" alt="" />`)
+                        let responseItem = responseJson.pop()
+                        $(saveThis).html(`<img class="embedded-video-thumbnail" src="${responseItem['thumbnail_large']}" alt="${responseItem['description']}">`)
                     } catch (e) {
                         console.log(`Error: Unable to fetch thumbnail from Vimeo.`)
                     }
@@ -103,7 +104,7 @@
                     `
 
                     // Add the modal template to the body.
-                    $('body').append(appendBody)
+                    dqs('body').appendChild(appendBody)
 
                     $('#videomodal').on('hidden.bs.modal', () => {
                         $('#videomodal').remove()
