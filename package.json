@@ -4,7 +4,7 @@
   "description": "Pure javascript video embed plugin for Bootstrap 4. ES6 transpiled to ES5 with babel.",
   "main": "bootstrap4.videoembed.js",
   "scripts": {
-    "build": "babel source --presets babel-preset-es2015 --out-dir distribution",
+    "build": "webpack -p",
     "test": "open test/index.html"
   },
   "repository": {
@@ -12,8 +12,13 @@
     "url": "git+https://github.com/rjjakes/bootstrap4.videoembed.js.git"
   },
   "devDependencies": {
-    "babel-cli": "6",
-    "babel-preset-es2015": "6"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "webpack": "^3.10.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "keywords": [
     "bootstrap",
