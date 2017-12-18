@@ -1,4 +1,3 @@
-
 (function (window, document) {
 
     // Add function to document so it can be called with: document.videoEmbed()
@@ -19,27 +18,34 @@
             let cleanVideoID
             let videoEmbedLink
             let previewImageUrl
+            let videoTitle
+            let aspect = 0.0
 
-            if (videoLink.match(/(youtube.com)/)) {
+            if (videoLink.includes('youtube.com')) {
                 cleanVideoID = videoLink.split('v=')[1].replace(/(&)+(.*)/, '')
-            }
-            else if (videoLink.match(/(youtu.be)/) || videoLink.match(/(vimeo.com\/)+[0-9]/)) {
-                cleanVideoID = videoLink.split('/')[3].replace(/(&)+(.*)/, '')
-            }
-            else if (videoLink.match(/(vimeo.com\/)+[a-zA-Z]/)) {
-                cleanVideoID = videoLink.split('/')[5].replace(/(&)+(.*)/, '')
-            }
-
-            if (videoLink.includes('youtu.be') || videoLink.includes('youtube.com')) {
                 videoEmbedLink = `https://www.youtube.com/embed/${cleanVideoID}?autoplay=${autoplay.autoplay}`
-                previewImageUrl = `https://img.youtube.com/vi/${cleanVideoID}/hqdefault.jpg`
 
-                // Get and insert the thumbnail.
-                item.innerHTML = `<img class="embedded-video-thumbnail" src="${previewImageUrl}" alt="Youtube video.">`
+                fetch(`https://noembed.com/embed?url=http://www.youtube.com/watch?v=${cleanVideoID}`)
+                .then(response => {
+                    if (response.ok) {
+                        // Youtube returns a JSON response.
+                        return response.json()
+                    }
+                })
+                .then(responseJson => {
+                    aspect = responseJson.height / responseJson.width
+
+                    videoTitle = responseJson.title
+                    item.innerHTML = `<img class="embedded-video-thumbnail" src="${responseJson.thumbnail_url}" alt="${videoTitle}">`
+                })
+                .catch(error => {
+                    console.log(`Error: ${error.message}`)
+                })
+
             }
             else if (videoLink.includes('vimeo.com')) {
+                cleanVideoID = videoLink.split('/')[3].replace(/(&)+(.*)/, '')
                 videoEmbedLink = `https://player.vimeo.com/video/${cleanVideoID}?autoplay=${autoplay.autoplay}`
-                let saveThis = item    // save a reference to this
 
                 // For vimeo, we have to call the API to get the image URL
                 fetch(`http://vimeo.com/api/v2/video/${cleanVideoID}.json`)
@@ -53,7 +59,11 @@
                     // Decode the response to get the preview image URL.
                     try {
                         let responseItem = responseJson.pop()
-                        saveThis.innerHTML = `<img class="embedded-video-thumbnail" src="${responseItem['thumbnail_large']}" alt="${responseItem['description']}">`
+
+                        aspect = responseItem.height / responseItem.width
+
+                        videoTitle = responseItem.title
+                        item.innerHTML = `<img class="embedded-video-thumbnail" src="${responseItem.thumbnail_large}" alt="${videoTitle}">`
                     } catch (e) {
                         console.log(`Error: Unable to fetch thumbnail from Vimeo.`)
                     }
@@ -71,6 +81,8 @@
             // Click handler.
             item.addEventListener('click', (e) => {
 
+                console.log('aspect', aspect)
+
                 let widthType = 'innerWidth',
                     width
 
@@ -84,28 +96,29 @@
                 if (width > 767) {
                     e.preventDefault()
                     let appendBody = `
-                    <div class="modal fade" tabindex="-1" id="videomodal" role="dialog" aria-labelledby="myModalLabel"> 
-                        <div class="modal-dialog" role="document"> 
-                            <div class="modal-content"> 
-                                <div class="modal-header"> 
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>  
-                                </div> 
-                                <div class="modal-body"> 
-                                    <div class="VideoEmbed-Wrap VideoEmbed-animation">
-                                        <div class="VideoEmbed-Content">
-                                            <span class="VideoEmbed-Close"></span>
-                                            <iframe src="${videoEmbedLink}" allowfullscreen></iframe>
-                                        </div>
-                                    </div> 
-                                </div> 
-                            </div> 
-                            <div class="modal-footer"> 
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button> 
-                        </div> 
-                    </div>
-                    `
+<div class="modal fade" id="videomodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>${videoTitle}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="VideoEmbed-Wrap VideoEmbed-animation">
+            <div class="VideoEmbed-Content">
+                <span class="VideoEmbed-Close"></span>
+                <div style="position:relative;width:100%;height: 0;padding-bottom:${100 * aspect}%;">
+                    <iframe src="${videoEmbedLink}" id="bs4-video-iframe" allowfullscreen style="width:100%;height:100%;position:absolute;border: 0;"></iframe>
+                </div>    
+            </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>                    
+`
 
                     // Add the modal template to the body.
                     let appendedItem = document.createElement('div')
@@ -113,8 +126,9 @@
                     appendedItem.innerHTML = appendBody
                     document.body.appendChild(appendedItem)
 
+                    // When closed, remove the modal from the DOM.
                     $('#videomodal').on('hidden.bs.modal', () => {
-                        $('#videomodalWrap').remove()
+                        appendedItem.parentNode.removeChild(appendedItem)
                     })
 
                 } else {
@@ -125,5 +139,5 @@
         })
     }
 
-}(window, document));
+}(window, document))
 
