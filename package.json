@@ -1,5 +1,5 @@
 {
-  "name": "bootstrap4.videoembed.js",
+  "name": "bootstrap4-videoembed",
   "version": "1.0.0",
   "description": "Pure javascript video embed plugin for Bootstrap 4. ES6 transpiled to ES5 with babel.",
   "main": "bootstrap4.videoembed.js",
