@@ -34,5 +34,8 @@
   "bugs": {
     "url": "https://github.com/rjjakes/es6.videoembed.js/issues"
   },
-  "homepage": "https://github.com/rjjakes/es6.videoembed.js#readme"
+  "homepage": "https://github.com/rjjakes/es6.videoembed.js#readme",
+  "dependencies": {
+    "uglifyjs-webpack-plugin": "^1.1.4"
+  }
 }
