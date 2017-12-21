@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
     entry: ['whatwg-fetch', 'string-includes', './source/bootstrap4.videoembed.js'],
@@ -23,6 +22,17 @@ module.exports = {
         colors: true
     },
     plugins: [
-        new UglifyJsPlugin()
+        new webpack.optimize.UglifyJsPlugin({minimize: true}),
+        new webpack.BannerPlugin({
+            banner: `Copyright https://github.com/rjjakes
+Repository: https://github.com/rjjakes/bootstrap4.videoembed.js
+License: MIT
+
+Includes:
+https://www.npmjs.com/package/string-includes
+https://www.npmjs.com/package/whatwg-fetch
+`,
+            entryOnly: true
+        })
     ]
 }

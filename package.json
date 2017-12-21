@@ -1,7 +1,9 @@
 {
   "name": "bootstrap4-videoembed",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pure javascript video embed plugin for Bootstrap 4. ES6 transpiled to ES5 with babel.",
+  "author": "https://github.com/rjjakes",
+  "license": "MIT",
   "main": "bootstrap4.videoembed.js",
   "scripts": {
     "build": "webpack -p",
@@ -29,13 +31,8 @@
     "es6",
     "browser"
   ],
-  "author": "https://github.com/rjjakes",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rjjakes/es6.videoembed.js/issues"
   },
-  "homepage": "https://github.com/rjjakes/es6.videoembed.js#readme",
-  "dependencies": {
-    "uglifyjs-webpack-plugin": "^1.1.4"
-  }
+  "homepage": "https://github.com/rjjakes/es6.videoembed.js#readme"
 }
