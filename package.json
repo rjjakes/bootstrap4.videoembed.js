@@ -1,6 +1,6 @@
 {
   "name": "bootstrap4-videoembed",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Pure javascript video embed plugin for Bootstrap 4. ES6 transpiled to ES5 with babel.",
   "author": "https://github.com/rjjakes",
   "license": "MIT",

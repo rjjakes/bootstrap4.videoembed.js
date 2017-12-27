@@ -81,8 +81,6 @@
             // Click handler.
             item.addEventListener('click', (e) => {
 
-                console.log('aspect', aspect)
-
                 let widthType = 'innerWidth',
                     width
 
