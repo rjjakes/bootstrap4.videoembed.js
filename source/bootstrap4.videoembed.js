@@ -48,7 +48,7 @@
                 videoEmbedLink = `https://player.vimeo.com/video/${cleanVideoID}?autoplay=${autoplay.autoplay}`
 
                 // For vimeo, we have to call the API to get the image URL
-                fetch(`http://vimeo.com/api/v2/video/${cleanVideoID}.json`)
+                fetch(`https://vimeo.com/api/v2/video/${cleanVideoID}.json`)
                 .then(response => {
                     if (response.ok) {
                         // Vimeo returns a JSON response.
